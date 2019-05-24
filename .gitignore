@@ -1,0 +1,17 @@
+.DS_Store
+*.swp
+
+# idea
+.idea/
+*.iml
+
+.vscode/
+
+# eclipse
+.project
+.classpath
+.settings/
+
+# maven
+target/
+.factorypath
