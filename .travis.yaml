@@ -1,0 +1,39 @@
+language: java
+jdk:
+  - oraclejdk8
+  - oraclejdk11
+  - edge
+
+script:
+  mvn test -Dmaven.test.skip=false -fae
+
+env:
+  global:
+   # travis encrypt -r subchen/java-formatter-maven-plugin COVERITY_SCAN_TOKEN=project_token_from_coverity_scan
+   - secure: "haKT+WP5RHjO+xK+9lKYtlkCR/CgPVEYaQvBHxUcMdgkRYm7aj0vsRUwZM4uVn7kxCY8tJI5xE07yOL+wMxiSUB0tXOOCV0PkSG/+qUKUB8qc8dwBE9LuwrBz+cRm/1owJEUklV7mJiaHa1K7W8+82tm4ZWVxbfGX5gWObBvskRXkgxG2h78p31ErBqGRU9zZVYuYYoxHWSEa8FNy9XVNp8UGdBVNOpbqdAXa6tOGNahV6qo7tBWbbMX4AcekWCZPNvZzSnPiLX0lAfdN+GvRIwXKlSyInfS2VP0dnNL7UuqlCkuxPVx6zrmmOHEgAJfwFtCx/xt5Gf5HQLQo7E5vdAGmvqfHQlqR6WUYdwnmbCxW5tBlM/l4+8ypHB4Ecoyr9oMWeFRF5wDmfUIaCQZxf2bKPhkHsedEy2MmIi2g6yDJzhQB216+Yx9QQnODy9rIR0K7fKsETCHELwHQ1JcO+klMuIQjQyJfFRsXIz3Uj/XgiOflFUKOrN8NUkut/7UzJz7afagzFmL/nWkiAJ4jtphaU6q38l9Z/6PO4AJi+SUxGC4OJSkp6tyyKqRpeAishm87xXaUkzSKUry8ItnuDRdObxHVdh7slOyXGJFxosP63CBWNJHFsf6nXqCnX4MTqU6olnD1n79SJCPPR0jmRxxrhNkgz87f7tHydKLN0I="
+   # travis encrypt -r subchen/java-formatter-maven-plugin MAVEN_DEPLOY_SECRET_PASSWD=......
+   - secure: "Pz2MCFCbKm84mWm8Ta2bNexdrggQ796kIfoZRiFkJFLxhrxVSnbAfpTrrFkF0jmIJ/j/m0WU6KDVZolfwnJpvp67TVtBt1KRAq8NKg4OecPEqZYG4cPwLAbZ7Kaa+BNl5aLJodOyiyQvFSgUW/uPR3N8CUmi52qHGD+nnMJa5M9Rv77u/u3L2cZ1TWRP7NRyVe3caZtDaYBXE5NG03hzX/z+oPkPE87ot0VhRGlRBC8t7ymSOGJZGRt6N/EUaXVXUo29kO9i74Q7u4RnL9h3mDGOvqf1cJVsZH7yvwrlN2biSKBJAfF1ewqV4BYjFUMqAgTB6hVgSaURjQq1mnWITzM3mddZJNhp1Mk4xNN+xt8hSzDkEg0AjWgG1WFMqNRt0LavljtRiZZom0zv9AD4NAhXVkLWRvrGXIJWUCwDnBNmexn5nW3LCD0RuA/E2BSKBrq5TO65LNBrXvK5aWoaObqyjiJ/XNaaV2YiCAO1SY4UMoKup0GG7xNXAgh9yf4g+kQRvDtLp4U5y0oDkTKjppC78BIGO9Ks9s+efrqbGWCmt6l+yDR3gOcw9tZC331Fin+E9bDbP/kHht2SrVDHOiPHKDuyiwOXWjF4YkoadyoQHWUbfvAgQ3iyoyAVaCHIUM6txjza5wDFdcfcdG3e/xPmzBGitPtNPeJVXMu+8kk="
+
+addons:
+  # https://scan.coverity.com/travis_ci
+  coverity_scan:
+    project:
+      name: "subchen/java-formatter-maven-plugin"
+      description: "Build submitted via Travis CI"
+    notification_email: "subchen@gmail.com"
+    build_command_prepend: "mvn clean"
+    build_command: "mvn compile -Dmaven.test.skip=false"
+    branch_pattern: "master"
+
+before_deploy:
+  - curl -fSL https://dl.bintray.com/subchen/download/maven/subchen-maven-deploy.tar.gz.enc -O
+  - openssl aes-256-cbc -k "$MAVEN_DEPLOY_SECRET_PASSWD" -in subchen-maven-deploy.tar.gz.enc -out subchen-maven-deploy.tar.gz -d
+  - tar -zxvf subchen-maven-deploy.tar.gz -C ~/
+
+deploy:
+  provider: script
+  script: make deploy
+  skip_cleanup: true
+  on:
+    tags: true
+    jdk: oraclejdk8
