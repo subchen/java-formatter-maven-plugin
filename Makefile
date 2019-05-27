@@ -1,3 +1,5 @@
+default: verify
+
 clean:
 	mvn clean
 
@@ -12,6 +14,9 @@ build:
 
 verify:
 	mvn verify -P oss
+
+install:
+	mvn install
 
 deploy:
 	mvn clean deploy -P oss -DautoReleaseAfterClose=true

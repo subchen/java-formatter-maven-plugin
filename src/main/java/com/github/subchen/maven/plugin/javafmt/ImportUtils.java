@@ -19,13 +19,14 @@
  */
 package com.github.subchen.maven.plugin.javafmt;
 
-import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import lombok.val;
 import lombok.var;
 
-import com.google.googlejavaformat.java.RemoveUnusedImports;
+import org.apache.commons.lang3.StringUtils;
 
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
@@ -36,15 +37,7 @@ class ImportUtils {
     private static final Pattern IMPORT_LINE_PATTERN = Pattern.compile("^import .+;$", Pattern.MULTILINE);
 
     public String format(String code) {
-        return reorderImports(removeUnusedImports(code));
-    }
-
-    /**
-     * Using google-java-format to remove unused imports
-     */
-    @SneakyThrows
-    private String removeUnusedImports(String code) {
-        return RemoveUnusedImports.removeUnusedImports(code);
+        return reorderImports(code);
     }
 
     /**
@@ -54,8 +47,8 @@ class ImportUtils {
         var start = 0;
         var end = 0;
 
-        var javaSet = new TreeSet<>();
-        var othersSet = new TreeSet<>();
+        val javaSet = new TreeSet<String>();
+        val othersSet = new TreeSet<String>();
         Set<String> staticSet = null;
         Set<String> lombokSet = null;
 
@@ -89,6 +82,22 @@ class ImportUtils {
             return code;
         }
 
+        val body = code.substring(end);
+
+        // remove unused imports
+        Arrays.asList(lombokSet, othersSet, javaSet, staticSet)
+            .stream()
+            .filter(Objects::nonNull)
+            .forEach(set -> {
+                val it = set.iterator();
+                while (it.hasNext()) {
+                    val name = StringUtils.substringAfterLast(it.next(), ".");
+                    if (!body.contains(StringUtils.strip(name, ";"))) {
+                        it.remove();
+                    }
+                }
+            });
+
         val sb = new StringBuilder(end - start + 64);
         if (lombokSet != null && lombokSet.size() > 0) {
             lombokSet.forEach(line -> sb.append(line).append(LINE_SEPARATOR));
@@ -105,13 +114,13 @@ class ImportUtils {
             }
             javaSet.forEach(line -> sb.append(line).append(LINE_SEPARATOR));
         }
-        if (staticSet != null) {
+        if (staticSet != null && staticSet.size() > 0) {
             if (sb.length() > 0) {
                 sb.append(LINE_SEPARATOR);
             }
             staticSet.forEach(line -> sb.append(line).append(LINE_SEPARATOR));
         }
 
-        return code.substring(0, start) + sb.toString().trim() + code.substring(end);
+        return code.substring(0, start) + sb.toString().trim() + body;
     }
 }
