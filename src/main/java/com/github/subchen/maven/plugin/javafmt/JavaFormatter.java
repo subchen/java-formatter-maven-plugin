@@ -57,7 +57,7 @@ public final class JavaFormatter {
     }
 
     public String format(String code) throws Exception {
-        return ImportUtils.format(formatCode(code));
+        return ImportUtils.reorderAndRemoveUnusedImports(formatCode(code));
     }
 
     private String formatCode(String code) throws BadLocationException {

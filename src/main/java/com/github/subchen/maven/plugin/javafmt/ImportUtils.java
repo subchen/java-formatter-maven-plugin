@@ -36,14 +36,10 @@ class ImportUtils {
     private static final String LINE_SEPARATOR = JavaFormatter.LINE_SEPARATOR;
     private static final Pattern IMPORT_LINE_PATTERN = Pattern.compile("^import .+;$", Pattern.MULTILINE);
 
-    public String format(String code) {
-        return reorderImports(code);
-    }
-
     /**
-     * Reorder import statements using customize groups.
+     * Reorder and remove unsed import statements.
      */
-    private String reorderImports(String code) {
+    public String reorderAndRemoveUnusedImports(String code) {
         var start = 0;
         var end = 0;
 
