@@ -19,6 +19,7 @@ To have your sources automatically formatted on each build, add to your `pom.xml
     <version>1.0.0</version>
     <executions>
         <execution>
+            <phase>process-sources</phase>
             <goals>
                 <goal>format</goal>
             </goals>
@@ -31,4 +32,17 @@ To have your sources automatically formatted on each build, add to your `pom.xml
 
 ```bash
 mvn java-formatter:format
+
+or
+
+mvn process-sources
 ```
+
+## Eclipse & IntelliJ IDEA
+
+Download & Import config file into Eclipse IDE. If you are using IntelliJ IDEA, please install `Eclipse Code Formmater` plugin.
+
+https://github.com/subchen/java-formatter-maven-plugin/blob/master/src/main/resources/java-formatter.xml
+
+
+
