@@ -20,3 +20,4 @@ install:
 
 deploy:
 	mvn clean deploy -P oss -DautoReleaseAfterClose=true
+
