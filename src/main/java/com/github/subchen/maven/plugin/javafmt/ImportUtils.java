@@ -21,7 +21,6 @@ package com.github.subchen.maven.plugin.javafmt;
 
 import lombok.experimental.UtilityClass;
 import lombok.val;
-import lombok.var;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -40,8 +39,8 @@ class ImportUtils {
      * Reorder and remove unsed import statements.
      */
     public String reorderAndRemoveUnusedImports(String code) {
-        var start = 0;
-        var end = 0;
+        int start = 0;
+        int end = 0;
 
         val javaSet = new TreeSet<String>();
         val othersSet = new TreeSet<String>();

@@ -1,5 +1,5 @@
 [![Maven](https://img.shields.io/maven-central/v/com.github.subchen/java-formatter-maven-plugin.svg?style=flat&label=java-formatter-maven-plugin)](https://search.maven.org/search?q=a:java-formatter-maven-plugin)
-[![Build Status](https://travis-ci.org/subchen/java-formatter-maven-plugin.svg?branch=master)](https://travis-ci.org/subchen/java-formatter-maven-plugin)
+[![Build Status](https://github.com/subchen/java-formatter-maven-plugin/actions/workflows/maven-publish.yml/badge.svg)](https://github.com/subchen/java-formatter-maven-plugin/actions/workflows/maven-publish.yml)
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/subchen-java-formatter-maven-plugin/badge.svg?flat=1)](https://scan.coverity.com/projects/subchen-java-formatter-maven-plugin)
 [![JDK](http://img.shields.io/badge/JDK-v8.0+-yellow.svg)](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
 [![License](http://img.shields.io/badge/License-Apache_2-red.svg)](http://www.apache.org/licenses/LICENSE-2.0)
@@ -16,7 +16,7 @@ To have your sources automatically formatted on each build, add to your `pom.xml
 <plugin>
     <groupId>com.github.subchen</groupId>
     <artifactId>java-formatter-maven-plugin</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <executions>
         <execution>
             <phase>process-sources</phase>
