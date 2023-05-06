@@ -21,3 +21,5 @@ install:
 deploy:
 	mvn clean deploy -P oss -DautoReleaseAfterClose=true
 
+init-codespaces:
+	sdk install java 8.0.302-open
