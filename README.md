@@ -16,7 +16,7 @@ To have your sources automatically formatted on each build, add to your `pom.xml
 <plugin>
     <groupId>com.github.subchen</groupId>
     <artifactId>java-formatter-maven-plugin</artifactId>
-    <version>1.1.0</version>
+    <version>2.0.0</version>
     <executions>
         <execution>
             <phase>process-sources</phase>
@@ -27,6 +27,9 @@ To have your sources automatically formatted on each build, add to your `pom.xml
     </executions>
 </plugin>
 ```
+
+- 1.x for Java 8
+- 2.x for Java 11+
 
 ### Command line
 
